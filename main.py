@@ -66,6 +66,7 @@ class Bot:
             print(e)
 
     def handle_location(self, message):
+        # TODO: INLINE BUTTONS CALLBACKS DOES NOT WORK RIGHT
         res = self.get_location_coords((message.location.latitude, message.location.longitude))
         n_days = DEFAULT_N_DAYS
         keyboard = types.InlineKeyboardMarkup(row_width=1)
