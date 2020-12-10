@@ -20,6 +20,9 @@ class WeatherService:
         """
         pass
 
+# TODO: need catching exceptions with "try" when end limit of requests(Accu and maybe other)
+# TODO: get also pressure and humidity
+
 
 class OpenWeatherMapService(WeatherService):
     @staticmethod
