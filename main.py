@@ -6,11 +6,6 @@ from weather_info import WeatherInfo
 from weather_service import *
 from weather_service import OpenWeatherMapService, YandexWeatherService, AccuWeatherService
 
-"""
-inline - читаем название города -> перевод в координаты
-обычный режим - просим местоположение -> сразу отправляем координаты
-"""
-
 
 ALL_SERVICES = [OpenWeatherMapService, YandexWeatherService, AccuWeatherService]
 TEST_SERVICES = [OpenWeatherMapService]
@@ -57,14 +52,6 @@ class Bot:
         return r.json()
 
     @staticmethod
-    def get_location_coords(coords):
-        print(coords)
-        # TODO: f string to url + params
-        r = requests.get(
-            f'https://api.opencagedata.com/geocode/v1/json?q={coords[0]}%2C%20{coords[1]}&key={GEOCODE_APPID}&language=ru')
-        return r.json()
-
-    @staticmethod
     def get_formatted_weather(forecast_dict):
         pprint_rep = f"Прогноз погоды на {len(forecast_dict)} дней:\n"
         for date in forecast_dict:
@@ -83,9 +70,8 @@ class Bot:
     def handle_query_text(self, inline_query):
         try:
             res = self.get_location_cityname(inline_query)
-            # TODO: need full coordinates(int -> double) res['results'][0]['geometry']
-            wi = WeatherInfo(coords=(res['results'][0]['annotations']['DMS']['lat'][:2],  # latitude
-                                     res['results'][0]['annotations']['DMS']['lng'][:2]),  # longitude
+            wi = WeatherInfo(coords=(res['results'][0]['geometry']['lat'],  # latitude
+                                     res['results'][0]['geometry']['lng']),  # longitude
                              services=TEST_SERVICES)
             forecast = wi.get_result()
             answer = types.InlineQueryResultArticle('1',

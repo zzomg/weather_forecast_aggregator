@@ -20,8 +20,6 @@ class WeatherService:
         """
         pass
 
-# TODO: need catching exceptions with "try" when end limit of requests(Accu and maybe other)
-# TODO: get also pressure and humidity
 
 
 class OpenWeatherMapService(WeatherService):
@@ -30,14 +28,18 @@ class OpenWeatherMapService(WeatherService):
         return time.strftime('%Y-%m-%d', time.localtime(epoch_time))
 
     def get_info(self, coords, n_days):
-        r = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily',
+        try:
+            r = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily',
                                params={'lat': coords[0],
                                        'lon': coords[1],
                                        'appid': OWM_APPID,
                                        'cnt': n_days,
                                        'units': 'metric'})
-        if r.status_code != requests.codes.ok:
-            raise Exception("Unable to obtain data from OpenWeatherMap")
+            if r.status_code != requests.codes.ok:
+                raise Exception("Unable to obtain data from OpenWeatherMap")
+        except Exception as e:
+            print(e)
+            return {}
         res = r.json()
         forecast = {}
         for i in range(n_days):
@@ -50,13 +52,16 @@ class OpenWeatherMapService(WeatherService):
 
 class YandexWeatherService(WeatherService):
     def get_info(self, coords, n_days):
-        r = yapi.get(session=requests,
-                     api_key=YAN_APPID,
-                     rate='forecast',
-                     lat=coords[0],
-                     lon=coords[1],
-                     limit=n_days)
-        # TODO: проверка кода возврата запроса
+        try:
+            r = yapi.get(session=requests,
+                         api_key=YAN_APPID,
+                         rate='forecast',
+                         lat=coords[0],
+                         lon=coords[1],
+                         limit=n_days)
+        except Exception as e:
+            print(e)
+            return {}
         res = r.to_dict()
         forecast = {}
         for i in range(n_days):
@@ -72,10 +77,15 @@ class AccuWeatherService(WeatherService):
         if n_days > 5:  # нам API больше не позволяет :)
             n_days = 5
 
-        loc_req = requests.get(
-            f'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey={ACCUW_APPID}&q={coords[0]}%2C{coords[1]}')
-        if loc_req.status_code != requests.codes.ok:
-            raise Exception("Unable to obtain location from AccuWeather")
+        try:
+            loc_req = requests.get(
+                f'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey={ACCUW_APPID}&q={coords[0]}%2C{coords[1]}')
+            if loc_req.status_code != requests.codes.ok:
+                raise Exception("Unable to obtain location from AccuWeather")
+        except Exception as e:
+            print(e)
+            return {}
+
         loc_res = loc_req.json()
         loc_id = loc_res['Key']
 
@@ -94,11 +104,6 @@ class AccuWeatherService(WeatherService):
             date = res['DailyForecasts'][i]['Date'][:10]
             temp_min = res['DailyForecasts'][i]['Temperature']['Minimum']['Value']  # min temperature
             temp_max = res['DailyForecasts'][i]['Temperature']['Maximum']['Value']  # max temperature
-            forecast[date] = float((temp_max + temp_min)/2)
+            forecast[date] = float((temp_max + temp_min) / 2)
 
         return forecast
-
-
-if __name__ == '__main__':
-    ya = YandexWeatherService()
-    ya.get_info((53, 83), DEFAULT_N_DAYS)
