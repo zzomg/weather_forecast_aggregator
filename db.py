@@ -18,11 +18,12 @@ class User(Base):
     latitude = Column(Float)
     longitude = Column(Float)
     days_num = Column(Integer)
+    state = Column(Integer)
 
     def __repr__(self):
         return f"<User(id={self.id}, tg_id={self.tg_id}, " \
                f"latitude={self.latitude}, longitude={self.longitude}, " \
-               f"days_num={self.days_num})>"
+               f"days_num={self.days_num}, state={self.state})>"
 
 
 class Service(Base):
@@ -71,8 +72,8 @@ session = Session()
 # session.add(us)
 
 
-us1 = session.query(UserService).get(1)
-print(us1.id, us1.user.tg_id, us1.service.name)
+# us1 = session.query(UserService).get(1)
+# print(us1.id, us1.user.tg_id, us1.service.name)
 # session.delete(us1)
 
 # session.commit()
