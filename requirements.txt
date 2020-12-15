@@ -5,6 +5,8 @@ certifi==2020.12.5
 chardet==3.0.4
 idna==2.10
 multidict==5.1.0
+pkg-resources==0.0.0
+psycopg2-binary==2.8.6
 pyTelegramBotAPI==3.7.4
 python-box==5.2.0
 requests==2.25.0
