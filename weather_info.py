@@ -3,9 +3,9 @@ from settings import DEFAULT_N_DAYS
 
 class WeatherInfo:
     """
-    coords = (longitude, latitude) = [долгота, ширина] координаты юзера
-    services = [s1, s2, ...] сервисы, с которых предоставляется информация о прогнозах
-    n_days = на какой период нужно предоставить прогноз
+    coords = (longitude, latitude) user coords
+    services = [s1, s2, ...] weather serviced to aggregate
+    n_days = forecast period
     """
 
     def __init__(self, coords, services, n_days=DEFAULT_N_DAYS):
