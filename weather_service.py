@@ -7,16 +7,9 @@ from settings import OWM_APPID, YAN_APPID, ACCUW_APPID, DEFAULT_N_DAYS
 
 
 class WeatherService:
-    """
-    Интерфейс для парсеров сайтов различных видов.
-    """
-
     def get_info(self, coords: tuple, n_days: int) -> dict:
         """
-        :param coords: [longitude, latitude] = [долгота, ширина] координаты юзера
-        :param n_days: на какой период нужно предоставить прогноз
-        :return: возвращает словарь с результатами {'date': 'temp'}.
-         Во всех возвращаемых словарях даты _обязаны_ совпадать.
+        Returns dict with forecast results. Dict keys are dates which must have same format in all overriden methods.
         """
         pass
 
