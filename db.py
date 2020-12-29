@@ -56,25 +56,3 @@ Service.service_users = relationship("UserService", order_by=UserService.id, bac
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
-
-# u = User(tg_id=286065026, latitude=0, longitude=0, days_num=1)
-# s = Service(name="OpenWeatherMap")
-#
-# session.add(u)
-# session.add(s)
-
-# u = session.query(User).filter_by(tg_id=286065026).first()
-# print(u)
-# s = session.query(Service).filter_by(name="OpenWeatherMap").first()
-# print(s)
-# us = UserService(user=u, service=s)
-# print(us)
-# session.add(us)
-
-
-# us1 = session.query(UserService).get(1)
-# print(us1.id, us1.user.tg_id, us1.service.name)
-# session.delete(us1)
-
-# session.commit()
-# print(u)
