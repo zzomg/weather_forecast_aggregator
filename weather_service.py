@@ -9,6 +9,7 @@ from settings import OWM_APPID, YAN_APPID, ACCUW_APPID, DEFAULT_N_DAYS
 class WeatherService:
     def get_info(self, coords: tuple, n_days: int) -> dict:
         """
+        Interface method.
         Returns dict with forecast results. Dict keys are dates which must have same format in all overriden methods.
         """
         pass
